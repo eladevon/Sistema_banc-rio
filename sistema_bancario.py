@@ -124,11 +124,8 @@ class ContaCorrente(Conta):
 
     def sacar(self, valor):
         numero_saques = len(
-            [
-                transacao
-                for transacao in self.historico.transacoes
-                if transacao["tipo"] == Saque.__name__
-            ]
+            [transacao for transacao in self.historico.transacoes
+                if transacao["tipo"] == Saque.__name__]
         )
 
         excedeu_limite = valor > self._limite
@@ -166,7 +163,7 @@ class Historico:
             {
                 "tipo": transacao.__class__.__name__,
                 "valor": transacao.valor,
-                "data": datetime.utcnow().strftime("%d-%m-%Y %H:%M:%S"),
+                "data": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
             }
         )
 
@@ -179,7 +176,8 @@ class Historico:
                 yield transacao
 
     def transacoes_do_dia(self):
-        data_atual = datetime.utcnow().date()
+      #pass
+        data_atual = datetime.now().date()
         transacoes = []
         for transacao in self._transacoes:
             data_transacao = datetime.strptime(
@@ -308,7 +306,6 @@ def sacar(clientes):
 
     cliente.realizar_transacao(conta, transacao)
 
-
 @log_transacao
 def exibir_extrato(clientes):
     cpf = input("Informe o CPF do cliente: ")
@@ -395,7 +392,7 @@ def main():
         if opcao == "1":
             depositar(clientes)
 
-        elif opcao == "2s":
+        elif opcao == "2":
             sacar(clientes)
 
         elif opcao == "3":
